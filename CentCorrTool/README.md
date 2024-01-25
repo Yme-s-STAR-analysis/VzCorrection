@@ -2,9 +2,17 @@
 
 author: yghuang
 
-version: 4.0
+version: 5.0
 
 ## Change log
+
+23.01.2023 by yghuang (v5.0):
+
+> Now, luminosity correction and vz correction will also consider RefMult3 or RefMult3X.
+>
+>> And GetRefMult3Corr would ask for an additional boolean: false for traditional RefMult3 (which is default) and true for using Refmult3X.
+>
+> Patch checking machanism: in CentParams header and CentCorrTool, there will be patch number, if they do not match, it will be reported.
 
 22.11.2023 by yghuang (v4.0):
 
