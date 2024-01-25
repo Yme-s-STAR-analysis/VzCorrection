@@ -12,10 +12,11 @@ int main(int argc, char** argv){
     const char* trg = argv[1];
     const char* x1s = argv[2]; // fit range
     const char* x2s = argv[3];
+    const char* ref3Tag = argv[4]; // 3 or 3X
     int x1 = atoi(x1s);
     int x2 = atoi(x2s);
     TFile* tf = new TFile("vz_ref3_raw.root");
-    TH2F* th = (TH2F*)tf->Get(Form("hVzRef3_%s", trg));
+    TH2F* th = (TH2F*)tf->Get(Form("hVzRef%s_%s", ref3Tag, trg));
 
     // prepare TH1Ds
     const Int_t nbins = 70;
@@ -35,7 +36,7 @@ int main(int argc, char** argv){
             yaxis->FindBin(vzmin+i*step+step)
         );
         hRef3[i]->SetTitle(
-            Form("v#in(%.0f, %.0f) [cm];RefMult3;", vzmin+i*step, vzmin+i*step+step)
+            Form("v#in(%.0f, %.0f) [cm];RefMult%s;", vzmin+i*step, vzmin+i*step+step, ref3Tag)
         );
         vz[i] = vzmin+(i+0.5)*step;
     }
@@ -55,8 +56,8 @@ int main(int argc, char** argv){
     c->cd();
     gPad->SetLogz();
     th->Draw("colz");
-    c->Print(Form("vz_dist_raw_%s.pdf(", trg));
-    c->Print(Form("vz_dist_raw_%s_heatmap.png", trg));
+    c->Print(Form("vz_dist_raw_Ref%s_%s.pdf(", ref3Tag, trg));
+    c->Print(Form("vz_dist_raw_Ref%s_%s_heatmap.png", ref3Tag, trg));
     // page 2 to 5, 60 figures
     for (int ipage=0; ipage<4; ipage++){ 
         c->Clear();
@@ -76,8 +77,8 @@ int main(int argc, char** argv){
             h[i+ipage*15] = tfunc->GetParameter(2);
             herr[i+ipage*15] = tfunc->GetParError(2);
         }
-        c->Print(Form("vz_dist_raw_%s.pdf", trg));
-        c->Print(Form("vz_dist_raw_%s_p%d.png", trg, ipage+1));
+        c->Print(Form("vz_dist_raw_Ref%s_%s.pdf", ref3Tag, trg));
+        c->Print(Form("vz_dist_raw_Ref%s_%s_p%d.png", ref3Tag, trg, ipage+1));
     }
     // page 6:  10 figs (all 70 done)
     c->Clear();
@@ -102,16 +103,16 @@ int main(int argc, char** argv){
     lat->SetTextSize(0.04);
     c->cd();
     lat->DrawLatexNDC(0.3, 0.18, "STAR BES-II");
-    lat->DrawLatexNDC(0.3, 0.08, "Au+Au @ 17.3 GeV");
-    c->Print(Form("vz_dist_raw_%s.pdf)", trg));
-    c->Print(Form("vz_dist_raw_%s_p5.png", trg));
+    lat->DrawLatexNDC(0.3, 0.08, "Au+Au @ 14.6 GeV");
+    c->Print(Form("vz_dist_raw_Ref%s_%s.pdf)", ref3Tag, trg));
+    c->Print(Form("vz_dist_raw_Ref%s_%s_p5.png", ref3Tag, trg));
 
     // save h(vz)
     TGraphErrors* tg = new TGraphErrors(nbins, vz, h, vzerr, herr);
     tg->SetName("hVsVz");
     TF1* hfunc = new TF1("hfunc", "pol6", vzmin, vzmax);
     tg->Fit(hfunc, "RN0", "", vzmin, vzmax);
-    TFile* tsave = new TFile(Form("high_end_point_vz_%s_raw.root", trg), "recreate");
+    TFile* tsave = new TFile(Form("high_end_point_vz_Ref%s_%s_raw.root", ref3Tag, trg), "recreate");
     tsave->cd();
     tg->Write();
     hfunc->Write();
