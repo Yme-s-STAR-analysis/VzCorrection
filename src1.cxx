@@ -58,8 +58,9 @@ int main(){
     corr->SetDoBetaPileUp(true);
     corr->SetDoLumi(false);
     corr->SetDoVz(false);
+    corr->SetDoLumiX(false);
+    corr->SetDoVzX(false);
     corr->ReadParams();
-
 
     const int nTrg = cent_conf::nTrg;
 
@@ -69,7 +70,16 @@ int main(){
             Form("hVzRef3_%d", cent_conf::trgList[i]), 
             ";RefMult3;v_{z} [cm]", 
             850, -0.5, 849.5, 
-            241, -120.5, 120.5
+            141, -70.5, 70.5
+        );
+    }
+    TH2F* hVzRef3X[nTrg];
+    for (int i=0; i<nTrg; i++) {
+        hVzRef3X[i] = new TH2F(
+            Form("hVzRef3X_%d", cent_conf::trgList[i]), 
+            ";RefMult3X;v_{z} [cm]", 
+            1350, -0.5, 1349.5, 
+            141, -70.5, 70.5
         );
     }
 
@@ -82,10 +92,13 @@ int main(){
         int vzbin = corr->GetPileUpVzBin(maker->vz);
         if (vzbin < 0) { continue; }
         int ref3 = corr->GetRefMult3Corr(maker->RefMult, maker->RefMult3, maker->nTofMatch, maker->nTofBeta, 0, maker->vz, maker->trgid);
-        if (ref3 < 0) {
-            continue;
+        int ref3X = corr->GetRefMult3Corr(maker->RefMult, maker->RefMult3X, maker->nTofMatch, maker->nTofBeta, 0, maker->vz, maker->trgid, true);
+        if (ref3 >= 0) {
+            hVzRef3[trg]->Fill(ref3, maker->vz);
         }
-        hVzRef3[trg]->Fill(ref3, maker->vz);
+        if (ref3X >= 0) {
+            hVzRef3X[trg]->Fill(ref3X, maker->vz);
+        }
     }
 
 
@@ -94,6 +107,7 @@ int main(){
     tfout->cd();
     for (int i=0; i<nTrg; i++) {
         hVzRef3[i]->Write();
+        hVzRef3X[i]->Write();
     }
     tfout->Close();
     cout << "[LOG] This is the end of this workshop.\n";
