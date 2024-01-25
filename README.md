@@ -1,10 +1,10 @@
 # Vz correction
 
-version 4.1
+version 5.0
 
 author: Yige Huang
 
-date: 27.11.2023
+date: 25.01.2024
 
 ## Quick Start
 
@@ -21,6 +21,12 @@ date: 27.11.2023
 6. change `k` and `b` parameters in `plot.cxx` and `root -l -b -q plot.cxx`.
 
 ## Change Log
+
+25.01.2024 by yghuang (5.0):
+
+> Support RefMult3X.
+>
+>> When do fit, one more argument is needed, 3 or 3X.
 
 27.11.2023 by yghuang (4.1):
 
