@@ -299,7 +299,7 @@ class CentCorrTool {
 
         // -------------------------------------------------------------------
         // - centrality split functions for RefMult3X
-        void SetCentEdge(int e0, int e1, int e2, int e3, int e4, int e5, int e6, int e7, int e8) {
+        void SetCentEdgeX(int e0, int e1, int e2, int e3, int e4, int e5, int e6, int e7, int e8) {
             centSplitEdgeX[0] = e0;
             centSplitEdgeX[1] = e1;
             centSplitEdgeX[2] = e2;
