@@ -1,10 +1,10 @@
 # Vz correction
 
-version 5.0
+version 5.1
 
 author: Yige Huang
 
-date: 25.01.2024
+date: 26.01.2024
 
 ## Quick Start
 
@@ -22,11 +22,17 @@ date: 25.01.2024
 
 ## Change Log
 
-25.01.2024 by yghuang (5.0):
+26.01.2024 by yghuang (5.0 + 5.1):
 
 > Support RefMult3X.
 >
 >> When do fit, one more argument is needed, 3 or 3X.
+>
+> Made some changes in fit program.
+>
+>> Vz bin width is now 4 cm instead of 2 cm.
+>
+> Plot part is more intellengent.
 
 27.11.2023 by yghuang (4.1):
 
