@@ -19,7 +19,7 @@ int main(int argc, char** argv){
     TH2F* th = (TH2F*)tf->Get(Form("hVzRef%s_%s", ref3Tag, trg));
 
     // prepare TH1Ds
-    const Int_t nbins = 70;
+    const Int_t nbins = 35;
     Double_t vzmin = -70;
     Double_t vzmax = 70;
     Double_t step = (vzmax-vzmin) / nbins;
@@ -59,7 +59,7 @@ int main(int argc, char** argv){
     c->Print(Form("vz_dist_raw_Ref%s_%s.pdf(", ref3Tag, trg));
     c->Print(Form("vz_dist_raw_Ref%s_%s_heatmap.png", ref3Tag, trg));
     // page 2 to 5, 60 figures
-    for (int ipage=0; ipage<4; ipage++){ 
+    for (int ipage=0; ipage<2; ipage++){ 
         c->Clear();
         c->Divide(5, 3);
         for (int i=0; i<15; i++){
@@ -68,10 +68,12 @@ int main(int argc, char** argv){
             hRef3[i+ipage*15]->Scale(1.0 / hRef3[i+ipage*15]->GetMaximum());
             hRef3[i+ipage*15]->Draw("lep");
             tfunc->SetParameter(0, 1.0);
+            tfunc->SetParLimits(0, 1e-3, 1e-1);
             tfunc->SetParameter(1, 0.02);
             tfunc->SetParameter(2, 0.5 * (x1+x2));
+            tfunc->SetParLimits(2, x1, x2);
             for (Int_t ifit=0; ifit<10; ifit++){
-                hRef3[i+ipage*15]->Fit(tfunc, "RN0Q", "", x1, x2);
+                hRef3[i+ipage*15]->Fit(tfunc, "RN0", "", x1, x2);
             }
             tfunc->DrawClone("lsame");
             h[i+ipage*15] = tfunc->GetParameter(2);
@@ -83,20 +85,20 @@ int main(int argc, char** argv){
     // page 6:  10 figs (all 70 done)
     c->Clear();
     c->Divide(5, 3);
-    for (int i=0; i<10; i++){
+    for (int i=0; i<5; i++){
         c->cd(i+1);
         gPad->SetLogy();
-        hRef3[i+60]->Scale(1.0 / hRef3[i+60]->GetMaximum());
-        hRef3[i+60]->Draw("lep");
+        hRef3[i+30]->Scale(1.0 / hRef3[i+30]->GetMaximum());
+        hRef3[i+30]->Draw("lep");
         tfunc->SetParameter(0, 1.0);
         tfunc->SetParameter(1, 0.02);
         tfunc->SetParameter(2, 0.5 * (x1+x2));
-        for (Int_t ifit=0; ifit<10; ifit++){
-            hRef3[i+60]->Fit(tfunc, "RN0Q", "", x1, x2);
+        for (Int_t ifit=0; ifit<5; ifit++){
+            hRef3[i+30]->Fit(tfunc, "RN0Q", "", x1, x2);
         }
         tfunc->DrawClone("lsame");
-        h[i+60] = tfunc->GetParameter(2);
-        herr[i+60] = tfunc->GetParError(2);
+        h[i+30] = tfunc->GetParameter(2);
+        herr[i+30] = tfunc->GetParError(2);
     }
     // draw text
     TLatex* lat = new TLatex();
