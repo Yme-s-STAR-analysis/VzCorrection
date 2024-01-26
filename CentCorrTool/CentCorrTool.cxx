@@ -75,7 +75,7 @@ int CentCorrTool::ConvertTrg(int trg) {
     return -1;
 }
 
-int CentCorrTool::LumiCorrection(int trg, int ref3, int zdcx, bool withX=false) {
+int CentCorrTool::LumiCorrection(int trg, int ref3, int zdcx, bool withX) {
     // trg means converted trgid
     // like: 0 for 610001, 0 is trg and 610001 is trgid 
     double f = 0;
@@ -90,7 +90,7 @@ int CentCorrTool::LumiCorrection(int trg, int ref3, int zdcx, bool withX=false) 
     return (int)(factor * ref3);
 }
 
-int CentCorrTool::VzCorrection(int trg, int ref3, double vz, bool withX=false) {
+int CentCorrTool::VzCorrection(int trg, int ref3, double vz, bool withX) {
     double factor = 1;
     if (withX) {
         factor = parVzX[trg][0] / funcVzX->Eval(vz);
@@ -100,7 +100,7 @@ int CentCorrTool::VzCorrection(int trg, int ref3, double vz, bool withX=false) {
     return (int)(factor * ref3);
 }
 
-int CentCorrTool::GetRefMult3Corr(int refmult, int ref3, int nTofMatch, int nTofBeta, double zdcx, double vz, int trgid, bool withX=false) {
+int CentCorrTool::GetRefMult3Corr(int refmult, int ref3, int nTofMatch, int nTofBeta, double zdcx, double vz, int trgid, bool withX) {
     int trg = ConvertTrg(trgid);
     if (trg >= nTrg || trg < 0) { return -1; }
     int vzbin = GetPileUpVzBin(vz);
@@ -116,7 +116,7 @@ int CentCorrTool::GetRefMult3Corr(int refmult, int ref3, int nTofMatch, int nTof
     return ref3;
 }
 
-int CentCorrTool::GetCentrality9(int ref3, bool withX=false) {
+int CentCorrTool::GetCentrality9(int ref3, bool withX) {
     if (withX) {
         if (!doSplitX) {
             std::cout << "[WARNING] - GetCentrality9: Centrality bin edge (RefMult3X) not set yet." << std::endl;
