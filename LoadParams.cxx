@@ -1,7 +1,7 @@
 void LoadParams() {
     const int n = 1;
     const int trgs[n] = {
-        650000
+        710010
     };
     int major = 0; // 640041
 
@@ -25,7 +25,7 @@ void LoadParams() {
         cout << "Trigger ID: " << trgs[i] << endl;
         cout << "{";
         for (int j=0; j<7; j++) {
-            cout << p[j] << "\t";
+            cout << "\t" << p[j];
             if (j != 6) {
                 cout << ",";
             } else {
@@ -50,7 +50,7 @@ void LoadParams() {
         cout << "Trigger ID: " << trgs[i] << endl;
         cout << "{";
         for (int j=0; j<7; j++) {
-            cout << p[j] << "\t";
+            cout << "\t" << p[j];
             if (j != 6) {
                 cout << ",";
             } else {
